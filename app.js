@@ -10,12 +10,8 @@ var notes = new Notes();
 app.use(express.static(__dirname + '/static'));
 
 app.get('/notes', function (req, res){
-    // respond with collection of notes
-    console.log('/notes');
-    res.json([
-        { a: 'list' },
-        { of: 'notes'}
-    ]);
+    var notesJSON = notes.toJSON();
+    res.json(notesJSON);
 });
 
 app.post('/notes', function (req, res) {
