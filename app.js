@@ -1,6 +1,11 @@
 var express = require('express');
 var app = express();
+var Note = require('./models/Note.js').Note;
+var Notes = require('./collections/Notes.js').Notes;
+
 var PORT = 3000;
+
+var notes = new Notes();
 
 app.use(express.static(__dirname + '/static'));
 
@@ -33,3 +38,9 @@ app.delete('/notes/:id', function (req, res) {
 app.listen(PORT);
 
 console.log("Server now listening on port", PORT);
+
+var newNote = new Note({ 'title': 'something'});
+console.log("Created Note ", newNote.toJSON());
+
+notes.add(newNote);
+console.log("Added new note to notes collection", notes.toJSON());
