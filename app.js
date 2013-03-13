@@ -34,11 +34,7 @@ app.get('/notes', function (req, res){
 app.post('/notes', function (req, res) {
     var note = new Note(req.body);
     notes.add(note);
-    // Small hack to include the cid
-    // Backbone expects us to save models to the server which then
-    // returns the object with its correct ID
-    // We have nowhere to persist to, so we just use the cid
-    res.json(_.extend(note.toJSON(), { cid: note.cid }));
+    res.json(note.toJSON());
 });
 
 app.get('/notes/:id', function (req, res) {
