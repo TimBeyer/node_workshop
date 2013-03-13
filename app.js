@@ -8,6 +8,12 @@ var PORT = 3000;
 
 var notes = new Notes();
 
+_.each(['add', 'remove', 'change'], function (type) {
+    notes.on(type, function (model) {
+        console.log(type, model.toJSON());
+    });
+});
+
 app.use(express.static(__dirname + '/static'));
 app.use(express.bodyParser());
 
