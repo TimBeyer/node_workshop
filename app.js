@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var _ = require('underscore');
 var Note = require('./models/Note.js').Note;
 var Notes = require('./collections/Notes.js').Notes;
 
@@ -8,6 +9,7 @@ var PORT = 3000;
 var notes = new Notes();
 
 app.use(express.static(__dirname + '/static'));
+app.use(express.bodyParser());
 
 app.get('/notes', function (req, res){
     var notesJSON = notes.toJSON();
@@ -15,7 +17,13 @@ app.get('/notes', function (req, res){
 });
 
 app.post('/notes', function (req, res) {
-    // Create a new note and respond with it
+    var note = new Note(req.body);
+    notes.add(note);
+    // Small hack to include the cid
+    // Backbone expects us to save models to the server which then
+    // returns the object with its correct ID
+    // We have nowhere to persist to, so we just use the cid
+    res.json(_.extend(note.toJSON(), { cid: note.cid }));
 });
 
 app.get('/notes/:id', function (req, res) {
