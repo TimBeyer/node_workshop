@@ -32,7 +32,9 @@ app.get('/notes/:id', function (req, res) {
 });
 
 app.put('/notes/:id', function (req, res) {
-    // update a note with an id and respond with it
+    var note = notes.get(req.params.id);
+    note.set(req.body);
+    res.json(note.toJSON());
 });
 
 app.delete('/notes/:id', function (req, res) {
@@ -43,9 +45,3 @@ app.delete('/notes/:id', function (req, res) {
 app.listen(PORT);
 
 console.log("Server now listening on port", PORT);
-
-var newNote = new Note({ 'title': 'something'});
-console.log("Created Note ", newNote.toJSON());
-
-notes.add(newNote);
-console.log("Added new note to notes collection", notes.toJSON());
