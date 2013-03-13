@@ -29,13 +29,18 @@ _.each(['add', 'remove', 'change'], function (type) {
 app.use(express.static(__dirname + '/static'));
 app.use(express.bodyParser());
 
-var modelOr404 = function (model, res) {
+var modelOr404 = function (model, res, callback) {
     if (typeof model == "undefined"){
         res.send(404, "model not found");
     }
     else {
-        res.json(model.toJSON());
+        callback();
+        //res.json(model.toJSON());
     }
+};
+
+var sendModel = function (model, res) {
+    res.json(model.toJSON());
 };
 
 app.get('/notes', function (req, res){
@@ -51,29 +56,25 @@ app.post('/notes', function (req, res) {
 
 app.get('/notes/:id', function (req, res) {
     var note = notes.get(req.params.id);
-    modelOr404(note, res);
+    modelOr404(note, res, function () {
+        sendModel(note, res);
+    });
 });
 
 app.put('/notes/:id', function (req, res) {
     var note = notes.get(req.params.id);
-    if (typeof note == "undefined"){
-        res.send(404, "note not found");
-    }
-    else {
+    modelOr404(note, res, function () {
         note.set(req.body);
-        res.json(note.toJSON());
-    }
+        sendModel(note,res);
+    });
 });
 
 app.delete('/notes/:id', function (req, res) {
     var note = notes.get(req.params.id);
-    if (typeof note == "undefined"){
-        res.send(404, "note not found");
-    }
-    else {
+    modelOr404(note, res, function () {
         notes.remove(note);
-        res.json(note.toJSON());
-    }
+        sendModel(note,res);
+    });
 });
 
 
