@@ -17,6 +17,15 @@ _.each(['add', 'remove', 'change'], function (type) {
 app.use(express.static(__dirname + '/static'));
 app.use(express.bodyParser());
 
+var modelOr404 = function (model, res) {
+    if (typeof model == "undefined"){
+        res.send(404, "model not found");
+    }
+    else {
+        res.json(model.toJSON());
+    }
+};
+
 app.get('/notes', function (req, res){
     var notesJSON = notes.toJSON();
     res.json(notesJSON);
@@ -34,17 +43,29 @@ app.post('/notes', function (req, res) {
 
 app.get('/notes/:id', function (req, res) {
     var note = notes.get(req.params.id);
-    res.json(note.toJSON());
+    modelOr404(note, res);
 });
 
 app.put('/notes/:id', function (req, res) {
     var note = notes.get(req.params.id);
-    note.set(req.body);
-    res.json(note.toJSON());
+    if (typeof note == "undefined"){
+        res.send(404, "note not found");
+    }
+    else {
+        note.set(req.body);
+        res.json(note.toJSON());
+    }
 });
 
 app.delete('/notes/:id', function (req, res) {
-    // delete a note with an ID and respond with it
+    var note = notes.get(req.params.id);
+    if (typeof note == "undefined"){
+        res.send(404, "note not found");
+    }
+    else {
+        notes.remove(note);
+        res.json(note.toJSON());
+    }
 });
 
 
