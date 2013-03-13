@@ -1,16 +1,28 @@
 var express = require('express');
 var app = express();
+var server = require('http').Server(app);
+
 var _ = require('underscore');
 var Note = require('./models/Note.js').Note;
 var Notes = require('./collections/Notes.js').Notes;
 
 var PORT = 3000;
+var SOCKET_PORT = 9001;
+
+var io = require('socket.io').listen(SOCKET_PORT);
+console.log("Socket listening on port", SOCKET_PORT);
 
 var notes = new Notes();
+
+// Set up websocket server
+io.sockets.on('connection', function (socket) {
+    console.log("WebsocketClient connected");
+});
 
 _.each(['add', 'remove', 'change'], function (type) {
     notes.on(type, function (model) {
         console.log(type, model.toJSON());
+        io.sockets.emit(type, model.toJSON());
     });
 });
 

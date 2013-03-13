@@ -1,12 +1,43 @@
 <html>
-	<head>
-		<style>
-			body {background: url('http://i.imgur.com/pMohk.jpg');}
-		</style>
-	</head>
-	<body>
-		<marquee><h1 style="color: yellow;">Welcome to our awesome page!</h1></marquee>
-		<center><img src="http://i.imgur.com/6IK36s6.gif"></center>
-		<blink><center><h2 style="color: red;">AWESOME!</h2></center></blink>
-	</body>
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.3/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
+    <script src="http://localhost:9001/socket.io/socket.io.js"></script>
+    <script src="./app.js"></script>
+    <style>body{ margin-top:50px }</style>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a href="" class="brand">Notes display</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <table id="notes" class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Action</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script id="note-row" type="text/x-handlebars-template">
+        <tr>
+            <td>{{cid}}</td>
+            <td>{{action}}</td>
+            <td>{{title}}</td>
+            <td>{{content}}</td>
+        </tr>
+    </script>
+</body>
 </html>
