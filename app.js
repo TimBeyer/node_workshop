@@ -27,7 +27,8 @@ app.post('/notes', function (req, res) {
 });
 
 app.get('/notes/:id', function (req, res) {
-    // respond with a specific node
+    var note = notes.get(req.params.id);
+    res.json(note.toJSON());
 });
 
 app.put('/notes/:id', function (req, res) {
