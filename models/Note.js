@@ -7,6 +7,6 @@ var Note = Backbone.Model.extend({
     }
 });
 
-_.extend(exports,{
+_.extend(exports, {
     Note: Note
 });
